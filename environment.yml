@@ -1,0 +1,17 @@
+name: OmegaCAnalysis
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.13
+  - root
+  - rapidsim
+  - pip:
+      - numpy==2.3.3
+      - matplotlib==3.10.6
+      - apd==0.8.1
+      - ipykernel==6.30.1
+      - iminuit==2.32.0
+      - sweights==1.7.0
+      - xgboost==3.1.2
+      - snakemake

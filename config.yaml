@@ -1,0 +1,16 @@
+workflow:
+  # Set to false to skip the expensive skim and start from a pre-skimmed ROOT file.
+  run_skim: true
+
+input:
+  raw_source: "root://eospublic.cern.ch//eos/opendata/lhcb/upload/opendata-lhcb-ntupling-service/analysis-productions/merge-requests/4413/outputs/real-production/"
+
+# 0 means "all files". Override with: snakemake --config max_files=5
+max_files: 0
+
+paths:
+  skimmed_dir: "skimmed"
+  eos_skimmed_dir: "root://eospublic.cern.ch//eos/opendata/lhcb/upload/example_omega_c_resonances/"
+  plots_dir: "plots"
+  weighted_dir: "weighted"
+  fit_dir: "fit"
