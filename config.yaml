@@ -3,7 +3,7 @@ workflow:
   run_skim: true
 
 input:
-  raw_source: "root://eospublic.cern.ch//eos/opendata/lhcb/upload/opendata-lhcb-ntupling-service/analysis-productions/merge-requests/4413/outputs/real-production/"
+  raw_source: "root://eospublic.cern.ch//eos/opendata/lhcb/CollisionNtuples/OPENDATA.LHCB.MHK4.OQO3/outputs/real-production/"
 
 # 0 means "all files". Override with: snakemake --config max_files=5
 max_files: 0

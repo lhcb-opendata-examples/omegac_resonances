@@ -9,9 +9,8 @@ from urllib.parse import urlparse
 
 
 DEFAULT_INPUT = (
-    "root://eospublic.cern.ch//eos/opendata/lhcb/upload/"
-    "opendata-lhcb-ntupling-service/analysis-productions/"
-    "merge-requests/4413/outputs/real-production/"
+    "root://eospublic.cern.ch//eos/opendata/lhcb/"
+    "CollisionNtuples/OPENDATA.LHCB.MHK4.OQO3/outputs/real-production/"
 )
 
 DEFAULT_REMOTE_OUTPUT = (

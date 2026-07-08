@@ -1,5 +1,5 @@
 # Omega C Analysis
-This is an example analysis using [LHCb Open Data](https://opendata.cern.ch/docs/lhcb-getting-started) with the [LHCb Ntupling Service](opendata-lhcb-ntupling-service.app.cern.ch/). In case you are unfamiliar, please refer to the [usage guide](https://lhcb-opendata-guide.web.cern.ch/ntupling-service/) how to obtain your own LHCb Open Data. 
+This is an example analysis using [LHCb Open Data](https://opendata.cern.ch/docs/lhcb-getting-started) with the [LHCb Ntupling Service](https://opendata-lhcb-ntupling-service.app.cern.ch/). In case you are unfamiliar, please refer to the [usage guide](https://lhcb-opendata-guide.web.cern.ch/ntupling-service/) how to obtain your own LHCb Open Data. 
 For this analysis, ntuples were produced with the help of the LHCb Ntupling service with the goal to find excited $\Omega_c^0$ states in $\Omega_c^0 \rightarrow (\Xi_c^+ \rightarrow K^-p\pi^+)K^-$ decays.
 
 ## Applied Cuts
@@ -46,7 +46,7 @@ Inside the container, run `snakemake` directly.
 ### Mode 1: skim raw EOS tuples locally
 This is the full workflow. It reads the raw ntuples from EOS public, runs the local skim, and then continues with plotting, sWeighting, and the final fit.
 
-Keep `workflow.run_skim: true` in [`config.yaml`](/home/piet/Documents/opendata_example_omegac_resonances/config.yaml), then run:
+Keep `workflow.run_skim: true` in [`config.yaml`](config.yaml), then run:
 ```bash
 snakemake --cores 1 --config max_files=1
 ```
@@ -66,7 +66,7 @@ The skim step writes local skimmed ROOT files into `skimmed/`, and the later sta
 If you already have skimmed files in EOS public, skip the skim stage and start from those files directly.
 This is the recommended mode since filtering locally can take a long time.
 
-Set `workflow.run_skim: false` in [`config.yaml`](/home/piet/Documents/opendata_example_omegac_resonances/config.yaml), then run:
+Set `workflow.run_skim: false` in [`config.yaml`](config.yaml), then run:
 ```bash
 snakemake --cores 1 --config run_skim=false
 ```
