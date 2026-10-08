@@ -71,10 +71,21 @@ def parse_args():
         default=Path(__file__).resolve().parent.parent / "plots" / "skim",
         help="Directory where the plots will be written.",
     )
-    return parser.parse_args()
+    parser.add_argument(
+        "--plot-dpi",
+        type=int,
+        default=200,
+        help="Resolution of PNG plots in dots per inch (default: 200).",
+    )
+    args = parser.parse_args()
+    if args.plot_dpi <= 0:
+        parser.error("--plot-dpi must be a positive integer")
+    return args
 
 
-def save_histogram(mass_values, output_path: Path, bins: int, mass_range, xlabel: str) -> None:
+def save_histogram(
+    mass_values, output_path: Path, bins: int, mass_range, xlabel: str, plot_dpi: int = 200
+) -> None:
     output_path.parent.mkdir(parents=True, exist_ok=True)
     hist, edges = np.histogram(mass_values, bins=bins, range=mass_range)
     centers = 0.5 * (edges[:-1] + edges[1:])
@@ -102,7 +113,7 @@ def save_histogram(mass_values, output_path: Path, bins: int, mass_range, xlabel
     ax.grid(True, which="both", alpha=0.2, linewidth=0.5)
     add_lhcb_label(ax)
     fig.tight_layout()
-    fig.savefig(output_path, dpi=200)
+    fig.savefig(output_path, dpi=plot_dpi)
     plt.close(fig)
 
 
@@ -129,6 +140,7 @@ def main():
         70,
         (2430, 2520),
         r"$M(\Xi_c^{+})$ [MeV]",
+        plot_dpi=args.plot_dpi,
     )
     save_histogram(
         np.asarray(masses["Omega_cst0_M"], dtype=np.float64),
@@ -136,6 +148,7 @@ def main():
         70,
         (2900, 3500),
         r"$M(\Omega_c^{0})$ [MeV]",
+        plot_dpi=args.plot_dpi,
     )
     print("Done.")
 

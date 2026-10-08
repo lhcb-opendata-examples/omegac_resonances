@@ -1,0 +1,22 @@
+inputs:
+  directories:
+    - src
+  parameters:
+    # Use pre-skimmed EOS tuples by default; true enables skimming raw tuples.
+    run_skim: false
+    # Process all files by default; use 1 for a small test.
+    max_files: 0
+    # Use smaller PNG plots for comfortable viewing on smaller displays.
+    plot_dpi: 100
+    # Call the entrypoint explicitly to initialise ROOT paths in jobs.
+    python_command: "/usr/local/bin/docker-entrypoint.sh python3"
+workflow:
+  type: snakemake
+  file: Snakefile
+  files:
+    - config.yaml
+outputs:
+  directories:
+    - plots
+    - weighted
+    - fit

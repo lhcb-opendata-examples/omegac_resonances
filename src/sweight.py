@@ -88,7 +88,16 @@ def parse_args():
         default=Path(__file__).resolve().parent.parent / "plots" / "sweight",
         help="Directory where the diagnostic plots will be written.",
     )
-    return parser.parse_args()
+    parser.add_argument(
+        "--plot-dpi",
+        type=int,
+        default=200,
+        help="Resolution of PNG plots in dots per inch (default: 200).",
+    )
+    args = parser.parse_args()
+    if args.plot_dpi <= 0:
+        parser.error("--plot-dpi must be a positive integer")
+    return args
 
 
 def read_mass_arrays(skim_source: str, max_files: int) -> dict[str, np.ndarray]:
@@ -189,6 +198,7 @@ def save_xic_fit_plot(
     params,
     fit_errors,
     output_path: Path,
+    plot_dpi: int = 200,
 ) -> None:
     output_path.parent.mkdir(parents=True, exist_ok=True)
     y, edges = np.histogram(m_xi, bins=XIC_PLOT_BINS, density=False, range=(XIC_FIT_LOW, XIC_FIT_HIGH))
@@ -287,11 +297,13 @@ def save_xic_fit_plot(
     ax_pull.set_ylim((-5, 5))
     ax_pull.grid(True, which="both", alpha=0.2, linewidth=0.5)
     fig.tight_layout()
-    fig.savefig(output_path, dpi=200)
+    fig.savefig(output_path, dpi=plot_dpi)
     plt.close(fig)
 
 
-def save_weighted_omega_plot(m_omega: np.ndarray, weights: np.ndarray, output_dir: Path) -> None:
+def save_weighted_omega_plot(
+    m_omega: np.ndarray, weights: np.ndarray, output_dir: Path, plot_dpi: int = 200
+) -> None:
     output_dir.mkdir(parents=True, exist_ok=True)
     plot_range = (2970, 3500)
     bins = 70
@@ -313,7 +325,7 @@ def save_weighted_omega_plot(m_omega: np.ndarray, weights: np.ndarray, output_di
     ax_bkg.set_xlim(plot_range)
     ax_bkg.grid(True, which="both", alpha=0.2, linewidth=0.5)
     fig.tight_layout()
-    fig.savefig(output_dir / "omega_weighted.png", dpi=200)
+    fig.savefig(output_dir / "omega_weighted.png", dpi=plot_dpi)
     plt.close(fig)
 
 
@@ -394,8 +406,11 @@ def main():
         params,
         fit_errors,
         args.plot_output_dir / "xic_fit.png",
+        plot_dpi=args.plot_dpi,
     )
-    save_weighted_omega_plot(m_omega, weights, args.plot_output_dir)
+    save_weighted_omega_plot(
+        m_omega, weights, args.plot_output_dir, plot_dpi=args.plot_dpi
+    )
 
     print(f"Writing weighted ROOT file to {output_root}")
     write_weighted_root(output_root, masses, weights)

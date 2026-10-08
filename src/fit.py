@@ -85,7 +85,16 @@ def parse_args():
         default=Path(__file__).resolve().parent.parent / "fit" / "omega_fit.minuit.log",
         help="Path where the fit log will be written.",
     )
-    return parser.parse_args()
+    parser.add_argument(
+        "--plot-dpi",
+        type=int,
+        default=200,
+        help="Resolution of PNG plots in dots per inch (default: 200).",
+    )
+    args = parser.parse_args()
+    if args.plot_dpi <= 0:
+        parser.error("--plot-dpi must be a positive integer")
+    return args
 
 
 FIT_RANGE = (2970.0, 3500.0)
@@ -232,7 +241,9 @@ def build_fit_model(m_omega: np.ndarray, weights: np.ndarray):
     return minuit, model_density
 
 
-def save_fit_plot(m_omega, weights, minuit, model_density, output_path: Path):
+def save_fit_plot(
+    m_omega, weights, minuit, model_density, output_path: Path, plot_dpi: int = 200
+):
     output_path.parent.mkdir(parents=True, exist_ok=True)
     hist, edges = np.histogram(m_omega, bins=FIT_PLOT_BINS, weights=weights, range=FIT_RANGE)
     hist_var, _ = np.histogram(m_omega, bins=FIT_PLOT_BINS, weights=np.square(weights), range=FIT_RANGE)
@@ -328,7 +339,7 @@ def save_fit_plot(m_omega, weights, minuit, model_density, output_path: Path):
     ax_pull.grid(True, which="both", alpha=0.2, linewidth=0.5)
 
     fig.tight_layout()
-    fig.savefig(output_path, dpi=200)
+    fig.savefig(output_path, dpi=plot_dpi)
     plt.close(fig)
 
 
@@ -373,7 +384,9 @@ def main():
     print(f"Wrote fit log to {log_path}")
 
     print("Writing fit plot")
-    save_fit_plot(m_omega, weights, minuit, model_density, plot_output_file)
+    save_fit_plot(
+        m_omega, weights, minuit, model_density, plot_output_file, plot_dpi=args.plot_dpi
+    )
     write_results_json(minuit, args.results_json, weighted_file)
     print(f"Wrote fit summary to {args.results_json}")
     print(f"Wrote fit plot to {plot_output_file}")
